@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SyabilHafizdini/node-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SyabilHafizdini/node-server/issues"
+  },
+  "homepage": "https://github.com/SyabilHafizdini/node-server#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

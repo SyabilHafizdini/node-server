@@ -10,7 +10,7 @@ module.exports = {
         key: './nodeserver.pem',
         ref: 'origin/master',
         repo: 'git@github.com:SyabilHafizdini/node-server.git',
-        path: '~/ubuntu/node-server',
+        path: '~/node-server',
         'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js && touch yeetpe'
       }
     }

@@ -11,7 +11,7 @@ module.exports = {
         ref: 'origin/master',
         repo: 'git@github.com:SyabilHafizdini/node-server.git',
         path: '~/node-server',
-        'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js && touch yeetpe'
+        'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js'
       }
     }
   }

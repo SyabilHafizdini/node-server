@@ -3,32 +3,38 @@ const express = require('express')
 const app = express() 
 const bodyParser = require('body-parser')
 
+const ipv4 = '192.168.1.109'
+const port = '3000'
+
 app.use(bodyParser.json())
 
-mongoose.connect("mongodb+srv://root:root@vocapp-vev3t.mongodb.net/Books?retryWrites=true")
+//connecting to our database on the cloud
+mongoose.connect("mongodb+srv://admin:admin@temperature-humidity-dxoqv.mongodb.net/FYP?retryWrites=true")
 
-// Creating the Book Schema
-const bookSchema = mongoose.Schema({    
-    title: String,
-    price: Number,
-    read: Boolean
+// Creating the data schema to store the temperature and humidity
+const dataSchema = mongoose.Schema({    
+    temperature: Number,
+    humidity: Number,
+},
+{
+    timestamps: true
 })
 
-// Creating the Book Model
-const Book = mongoose.model('Books', bookSchema)
+// Creating the Model
+const Data = mongoose.model('Data', dataSchema)
 
 // Configuring GET endpoint
-app.get('/books', (req, res)=>{
-    Book.find({}, null, {sort: {_id: -1}}, (err, books) => {
+app.get('/data', (req, res)=>{
+    Data.find({}, null, {sort: {_id: -1}}, (err, data) => {
         if (err) return console.log("Error: ", err)
-        res.send(books)
+        res.send(data)
     })
 })
 
 // Configuring POST endpoint
-app.post('/books', (req, res) => {
-    let  newBook = Book(req.body)
-    newBook.save((err, results) => {
+app.post('/data', (req, res) => {
+    let  newData = Data(req.body)
+    newData.save((err, results) => {
         if (err) {
             console.log("Error: ", err)
             process.exit(1)
@@ -40,20 +46,20 @@ app.post('/books', (req, res) => {
 })
 
 // Configuring the PUT endpoint
-app.put('/books/:id', (req, res) => {
-    Book.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(err, book) {
+app.put('/data/:id', (req, res) => {
+    Data.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(err, data) {
         if (err) return res.status(500).send(err);
-        return res.send(book);
+        return res.send(data);
     })
 })
 
 // Configuring the DELETE endpoint
-app.delete('/books/:id', (req, res) => {
-    Book.findByIdAndRemove(req.params.id, function(err, book) {
+app.delete('/data/:id', (req, res) => {
+    Data.findByIdAndRemove(req.params.id, function(err, data) {
         if (err) return res.status(500).send(err);
-        return res.send(book);
+        return res.send(data);
     })
 })
 
-app.listen(3000)
-console.log("Server is running")
+app.listen(port, ipv4)
+console.log("Server is running on " + ipv4 + ":" + port)

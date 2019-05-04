@@ -1,15 +1,17 @@
 const mongoose = require('mongoose')
 const express = require('express') 
+const cors = require('cors')
 const app = express() 
 const bodyParser = require('body-parser')
 
-const ipv4 = '192.168.1.109'
+const ipv4 = '192.168.1.189'
 const port = '3000'
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(cors());
 
 //connecting to our database on the cloud
-mongoose.connect("mongodb+srv://admin:admin@temperature-humidity-dxoqv.mongodb.net/FYP?retryWrites=true")
+mongoose.connect("mongodb://localhost:27017/FYP2019");
 
 // Creating the data schema to store the temperature and humidity
 const dataSchema = mongoose.Schema({    
@@ -27,6 +29,7 @@ const Data = mongoose.model('Data', dataSchema)
 app.get('/data', (req, res)=>{
     Data.find({}, null, {sort: {_id: -1}}, (err, data) => {
         if (err) return console.log("Error: ", err)
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.send(data)
     })
 })

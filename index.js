@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //connecting to our database running on our server
-mongoose.connect("mongodb://192.168.1.189:27017/FYP2019");
+mongoose.connect("mongodb://localhost:27017/FYP2019");
 
 // Creating the data schema to store the temperature and humidity
 const dataSchema = mongoose.Schema({    

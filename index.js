@@ -4,29 +4,32 @@ const cors = require('cors')
 const app = express() 
 const bodyParser = require('body-parser')
 
-// const ipv4 = '192.168.1.189' //=Home=
-const ipv4 = '192.168.1.138' //=Home2=
+// const ipv4 = '192.168.1.189' //=Home Laptop=
+const ipv4 = '192.168.1.109' //=Home Desktop=
+// const ipv4 = '192.168.1.138' //=Home2=
 const port = '3000'
 
 app.use(bodyParser.json());
 app.use(cors());
 
 //connecting to our database running on our server
-mongoose.connect("mongodb://localhost:27017/FYP2019");
+mongoose.connect("mongodb://192.168.1.189:27017/FYP2019");
 
 // Creating the data schema to store the temperature and humidity
 const dataSchema = mongoose.Schema({    
     temperature: Number,
     humidity: Number,
     time: String,
+}, {
+    collection: "RaspberryPi1"
 })
 
 // Creating the Model
-const Data = mongoose.model('Data', dataSchema)
+const TemperatureHumidity = mongoose.model('TemperatureHumidity', dataSchema)
 
 // Configuring GET endpoint
 app.get('/data', (req, res)=>{
-    Data.find({}, null, {sort: {_id: -1}}, (err, data) => {
+    DTemperatureHumidityata.find({}, null, {sort: {_id: -1}}, (err, data) => {
         if (err) return console.log("Error: ", err)
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.send(data)
@@ -35,7 +38,7 @@ app.get('/data', (req, res)=>{
 
 // Configuring POST endpoint
 app.post('/data', (req, res) => {
-    let  newData = Data(req.body)
+    let  newData = TemperatureHumidity(req.body)
     newData.save((err, results) => {
         if (err) {
             console.log("Error: ", err)
@@ -44,22 +47,6 @@ app.post('/data', (req, res) => {
             console.log("Saved: ", results)
             res.sendStatus(201)
         }
-    })
-})
-
-// Configuring the PUT endpoint
-app.put('/data/:id', (req, res) => {
-    Data.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(err, data) {
-        if (err) return res.status(500).send(err);
-        return res.send(data);
-    })
-})
-
-// Configuring the DELETE endpoint
-app.delete('/data/:id', (req, res) => {
-    Data.findByIdAndRemove(req.params.id, function(err, data) {
-        if (err) return res.status(500).send(err);
-        return res.send(data);
     })
 })
 

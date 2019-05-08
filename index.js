@@ -7,6 +7,8 @@ const bodyParser = require('body-parser')
 const ipv4 = '192.168.1.189' //=Home Laptop=
 // const ipv4 = '192.168.1.109' //=Home Desktop=
 // const ipv4 = '192.168.1.138' //=Home2=
+// const ipv4 = '192.168.1.40' //=School=
+
 const port = '3000'
 
 app.use(bodyParser.json());
@@ -20,6 +22,7 @@ const dataSchema = mongoose.Schema({
     temperature: Number,
     humidity: Number,
     time: String,
+    date: String,
 }, {
     collection: "RaspberryPi1"
 })
@@ -29,7 +32,7 @@ const TemperatureHumidity = mongoose.model('TemperatureHumidity', dataSchema)
 
 // Configuring GET endpoint
 app.get('/data', (req, res)=>{
-    TemperatureHumidity.find({}, null, {sort: {_id: -1}}, (err, data) => {
+    TemperatureHumidity.find({}, null, {sort: {date: -1, time: -1}}, (err, data) => {
         if (err) return console.log("Error: ", err)
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.send(data)

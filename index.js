@@ -1,34 +1,19 @@
-const mongoose = require('mongoose')
-const express = require('express') 
-const cors = require('cors')
-const app = express() 
-const bodyParser = require('body-parser')
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const config = require('config');
 
-const ipv4 = '192.168.1.189' //=Home Laptop=
-// const ipv4 = '192.168.1.109' //=Home Desktop=
-// const ipv4 = '192.168.1.138' //=Home2=
-// const ipv4 = '192.168.1.40' //=School=
+// initialise database
+require('./database');
 
-const port = '3000'
+// Models
+const TemperatureHumidity = require('./models/TemperatureHumidity');
+
+// make express app
+const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-
-//connecting to our database running on our server
-mongoose.connect("mongodb://localhost:27017/FYP2019");
-
-// Creating the data schema to store the temperature and humidity
-const dataSchema = mongoose.Schema({    
-    temperature: Number,
-    humidity: Number,
-    time: String,
-    date: String,
-}, {
-    collection: "RaspberryPi1"
-})
-
-// Creating the Model
-const TemperatureHumidity = mongoose.model('TemperatureHumidity', dataSchema)
 
 // Configuring GET endpoint
 app.get('/data', (req, res)=>{
@@ -53,5 +38,9 @@ app.post('/data', (req, res) => {
     })
 })
 
-app.listen(port, ipv4)
-console.log("Server is running on " + ipv4 + ":" + port)
+// always change this ip for local usage
+const ip = config.get('ips.home.feek');
+const port = config.get('server.port');
+
+app.listen(port, ip);
+console.log("Server is running on " + ip + ":" + port)

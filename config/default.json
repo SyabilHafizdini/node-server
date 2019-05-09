@@ -1,0 +1,26 @@
+{
+  "server": {
+    "port": 3000
+  },
+  "database": {
+    "host": "localhost",
+    "port": 27017,
+    "dbName": "FYP2019"
+  },
+  "models": {
+    "TemperatureHumidity": {
+      "collectionName": "RaspberryPi1"
+    }
+  },
+  "ips": {
+    "home": {
+      "laptop": "192.168.1.189",
+      "desktop": "192.168.1.109",
+      "alternate": "192.168.1.138",
+      "feek": "192.168.1.125"
+    },
+    "school": {
+      "laptop": "192.168.1.40"
+    }
+  }
+}

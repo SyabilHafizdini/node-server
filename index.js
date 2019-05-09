@@ -3,16 +3,17 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const config = require('config');
 
-const app = express();
-
-app.use(bodyParser.json());
-app.use(cors());
-
-//connecting to our database running on our server
+// initialise database
 require('./database');
 
 // Models
 const TemperatureHumidity = require('./models/TemperatureHumidity');
+
+// make express app
+const app = express();
+
+app.use(bodyParser.json());
+app.use(cors());
 
 // Configuring GET endpoint
 app.get('/data', (req, res)=>{
@@ -37,6 +38,7 @@ app.post('/data', (req, res) => {
     })
 })
 
+// always change this ip for local usage
 const ip = config.get('ips.home.feek');
 const port = config.get('server.port');
 

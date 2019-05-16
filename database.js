@@ -7,4 +7,4 @@ const {
   dbName
 } = config.get('database');
 
-mongoose.connect(`mongodb://${host}:${port}/${dbName}`);
+mongoose.connect(`mongodb://${host}:${port}/${dbName}`, { autoIndex: false });

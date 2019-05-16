@@ -39,7 +39,7 @@ app.post('/data', (req, res) => {
 })
 
 // always change this ip for local usage
-const ip = config.get('ips.home.laptop');
+const ip = config.get('ips.home.aws');
 const port = config.get('server.port');
 
 app.listen(port, ip);

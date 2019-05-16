@@ -17,12 +17,21 @@ app.use(cors());
 
 // Configuring GET endpoint
 app.get('/data', (req, res)=>{
-    TemperatureHumidity.find({}, null, {sort: {date: -1, time: -1}}, (err, data) => {
+    var date = req.query.date;
+    TemperatureHumidity.find({date}, null, {sort: {date: -1, time: -1}}, (err, data) => {
+        if (err) return console.log("Error: ", err)
+        res.send(data)
+    })
+})
+
+app.get('/data/all', (req, res) => {
+    TemperatureHumidity.find({}, null, { sort: { date: -1, time: 1 } }, (err, data) => {
         if (err) return console.log("Error: ", err)
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.send(data)
     })
 })
+
 
 // Configuring POST endpoint
 app.post('/data', (req, res) => {

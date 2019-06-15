@@ -4,8 +4,9 @@
   },
   "database": {
     "host": "localhost",
-    "port": 27017,
-    "dbName": "FYP2019"
+    "user": "root",
+    "password": "password",
+    "database": "fyp2019"
   },
   "models": {
     "TemperatureHumidity": {
@@ -17,6 +18,7 @@
       "laptop": "192.168.1.189",
       "desktop": "192.168.1.109",
       "alternate": "192.168.1.138",
+      "aws": "52.221.242.109",
       "feek": "192.168.1.125"
     },
     "school": {

@@ -5,9 +5,10 @@ const schema = mongoose.Schema({
   temperature: Number,
   humidity: Number,
   time: String,
-  date: String
+  date: String,
 }, {
-  collection: config.get('models.TemperatureHumidity.collectionName')
+  collection: config.get('models.TemperatureHumidity.collectionName'),
+  //timestamps: { createdAt: true, updatedAt: false }
 });
 
 const TemperatureHumidity = mongoose.model('TemperatureHumidity', schema);

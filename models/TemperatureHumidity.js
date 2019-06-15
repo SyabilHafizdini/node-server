@@ -7,7 +7,8 @@ const schema = mongoose.Schema({
   time: String,
   date: String,
 }, {
-  collection: config.get('models.TemperatureHumidity.collectionName')
+  collection: config.get('models.TemperatureHumidity.collectionName'),
+  //timestamps: { createdAt: true, updatedAt: false }
 });
 
 const TemperatureHumidity = mongoose.model('TemperatureHumidity', schema);

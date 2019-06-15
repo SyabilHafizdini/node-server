@@ -4,8 +4,9 @@
   },
   "database": {
     "host": "localhost",
-    "port": 27017,
-    "dbName": "FYP2019"
+    "user": "root",
+    "password": "password",
+    "database": "fyp2019"
   },
   "models": {
     "TemperatureHumidity": {

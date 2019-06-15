@@ -25,7 +25,7 @@ app.get('/data', (req, res)=>{
 })
 
 app.get('/data/all', (req, res) => {
-    TemperatureHumidity.find({}, null, { sort: { date: -1, time: 1 } }, (err, data) => {
+    TemperatureHumidity.find({}, null, { sort: { date: -1, time: -1 } }, (err, data) => {
         if (err) return console.log("Error: ", err)
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.send(data)
@@ -48,7 +48,7 @@ app.post('/data', (req, res) => {
 })
 
 // always change this ip for local usage
-const ip = config.get('ips.home.laptop');
+const ip = config.get('ips.home.alternate');
 const port = config.get('server.port');
 
 app.listen(port, ip);

@@ -27,7 +27,7 @@ app.use(cors());
 
 // Configuring GET endpoint
 
-function query_data(req, res) {
+function query_data_all(req, res) {
     pool.query('SELECT * FROM `temphumid` ORDER BY `datetime` DESC', function(err, rows) {
         if(err) {
             return res.json({'error': true, 'message': 'Error occurred'+err});
@@ -36,10 +36,52 @@ function query_data(req, res) {
     });
 }
 
+function query_dates(req, res) {
+    pool.query('SELECT DISTINCT SUBSTR(`datetime`,1,8) as date FROM `temphumid`', function(err, rows) {
+        if(err) {
+            return res.json({'error': true, 'message': 'Error occurred'+err});
+        }
+            res.send(rows)
+    });
+}
+
+function query_date(req, res) {
+    date = req.query.date;
+    pool.query(`SELECT * FROM temphumid WHERE SUBSTR(datetime,1,8) = "${date}"`, function(err, rows) {
+        if(err) {
+            return res.json({'error': true, 'message': 'Error occurred'+err});
+        }
+            res.send(rows)
+    });
+}
+
+function query_user(req, res) {
+    username = req.query.username;
+    password = req.query.password;
+    pool.query(`SELECT * FROM users WHERE username = "${username}" and password = "${password}"`, function(err, rows) {
+        if(err) {
+            return res.json({'error': true, 'message': 'Error occurred'+err});
+        }
+            res.send(rows)
+    });
+}
+
+
 app.get('/data/all', (req, res) => {
-    query_data(req,res);
+    query_data_all(req,res);
 })
 
+app.get('/data/dates', (req, res) => {
+    query_dates(req, res);
+})
+
+app.get('/data/date', (req, res) => {
+    query_date(req, res);
+})
+
+app.get('/data/user', (req, res) => {
+    query_user(req, res);
+})
 
 function insert_data(data, res) {
     let insertQuery = 'INSERT INTO ?? (??,??,??) VALUES (?,?,?)';

@@ -36,7 +36,6 @@ function query_data(req, res) {
     });
 }
 
-
 app.get('/data/all', (req, res) => {
     query_data(req,res);
 })

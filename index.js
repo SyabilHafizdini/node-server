@@ -1,125 +1,103 @@
+//Importing modules
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const config = require('config');
 const mysql = require('mysql')
+const TempHumidService = require('./services/TempHumidService');
 
-// initialise database
+//Initialise database
 const pool = require('./database');
 
-// Models
-//const TemperatureHumidity = require('./models/TemperatureHumidity');
-
-// make express app
+//Make the express app
 const app = express();
 
+//Enables us to parse json 
 app.use(bodyParser.json());
+
+//Bypass CORS
 app.use(cors());
 
-// Configuring GET endpoint
-// app.get('/data', (req, res)=>{
-//     var date = req.query.date;
-//     TemperatureHumidity.find({date}, null, {sort: {date: -1, time: -1}}, (err, data) => {
-//         if (err) return console.log("Error: ", err)
-//         res.send(data)
-//     })
-// })
+const service = new TempHumidService(pool);
 
-// Configuring GET endpoint
-
-function query_data_all(req, res) {
-    pool.query('SELECT * FROM `temphumid` ORDER BY `datetime` DESC', function(err, rows) {
-        if(err) {
-            return res.json({'error': true, 'message': 'Error occurred'+err});
-        }
-            res.send(rows)
-    });
-}
-
-function query_dates(req, res) {
-    pool.query('SELECT DISTINCT SUBSTR(`datetime`,1,8) as date FROM `temphumid`', function(err, rows) {
-        if(err) {
-            return res.json({'error': true, 'message': 'Error occurred'+err});
-        }
-            res.send(rows)
-    });
-}
-
-function query_date(req, res) {
-    date = req.query.date;
-    pool.query(`SELECT * FROM temphumid WHERE SUBSTR(datetime,1,8) = "${date}"`, function(err, rows) {
-        if(err) {
-            return res.json({'error': true, 'message': 'Error occurred'+err});
-        }
-            res.send(rows)
-    });
-}
-
-function query_user(req, res) {
-    username = req.query.username;
-    password = req.query.password;
-    pool.query(`SELECT * FROM users WHERE username = "${username}" and password = "${password}"`, function(err, rows) {
-        if(err) {
-            return res.json({'error': true, 'message': 'Error occurred'+err});
-        }
-            res.send(rows)
-    });
-}
-
-
-app.get('/data/all', (req, res) => {
-    query_data_all(req,res);
+//GET endpoint(s)
+app.get('/api/readings', async (req, res) => {
+    await readings(req,res);
 })
 
-app.get('/data/dates', (req, res) => {
-    query_dates(req, res);
+app.get('/api/dates', async (req, res) => {
+    await query_dates(req, res);
 })
 
-app.get('/data/date', (req, res) => {
-    query_date(req, res);
+
+app.get('/data/user', async (req, res) => {
+    await check_user_creds(req, res);
 })
 
-app.get('/data/user', (req, res) => {
-    query_user(req, res);
+//POST endpoint(s)
+app.post('/data', async (req, res) => {
+    await post_data(req.body, res);
 })
 
-function insert_data(data, res) {
-    let insertQuery = 'INSERT INTO ?? (??,??,??) VALUES (?,?,?)';
-    let query = mysql.format(insertQuery,
-        ["temphumid", "datetime", "temperature", "humidity",
-        data.datetime, data.temperature, data.humidity]);
-    pool.query(query, (err, response) => {
-        if (err) {
-            console.log("Error: ", err)
-            process.exit(1);
-        }
-            console.log("Saved: " + response.insertId);
-            res.sendStatus(201)
-    });
+//GET function(s)
+
+/* dataExample = {
+        "datetime": "20/06/19 08:08:12",
+        "temperature": 31,
+        "humidity": 40
+    }
+*/
+
+//Returns data from specific date if queried, otherwise returns whole all the data in the database
+async function readings(req, res) {
+    try {
+        date = req.query.date;
+        const data = (date ? await service.getDataFromSpecificDate(date) : await service.getAll());
+        res.send(data);
+    } catch(e){
+        console.error(e);
+    }
 }
 
-// Configuring POST endpoint
-app.post('/data', (req, res) => {
-    insert_data(req.body, res);
-})
+//Returns only the dates (e.g., ["14/06/19", "15/06/19" ...])
+async function query_dates(req, res) {
+    try {
+        const data = await service.getAllDates();
+        res.send(data);
+    } catch(e){
+        console.error(e);
+    }
+}
 
-// // Configuring POST endpoint
-// app.post('/data', (req, res) => {
-//     let  newData = TemperatureHumidity(req.body)
-//     newData.save((err, results) => {
-//         if (err) {
-//             console.log("Error: ", err)
-//             process.exit(1)
-//         } else {
-//             console.log("Saved: ", results)
-//             res.sendStatus(201)
-//         }
-//     })
-// })
+//Returns an object if username and password is correct, returns an empty array if it's not
+async function check_user_creds(req, res) {
+    try {
+        username = req.query.username;
+        password = req.query.password;
+        const data = await service.checkUserCredentials(username, password);
+        res.send(data);
+    } catch(e){
+        console.error(e);
+    }
+}
 
-// always change this ip for local usage
+//POST function(s)
+
+//Post data to our database and logs the insert ID
+async function post_data(data, res) {
+    try {
+        const post_result = await service.postTempHumidData(mysql, data);
+        console.log("Saved: " + post_result.insertId);
+        res.sendStatus(201);
+    } catch(e){
+        console.error(e);
+    }
+}
+
+//Setting PORT and IP for node server
 const ip = config.get('ips.home.desktop');
 const port = config.get('server.port');
 
+//Running node server
 app.listen(port, ip);
-console.log("Server is running on " + ip + ":" + port)
+console.log("Server is running on " + ip + ":" + port);

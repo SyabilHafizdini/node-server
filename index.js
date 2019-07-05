@@ -30,13 +30,26 @@ app.get('/api/dates', async (req, res) => {
 })
 
 
-app.get('/data/user', async (req, res) => {
+app.get('/api/users', async (req, res) => {
     await check_user_creds(req, res);
 })
 
 //POST endpoint(s)
 app.post('/data', async (req, res) => {
     await post_data(req.body, res);
+})
+
+//GET calculation endpoint(s)
+app.get('/api/calculations/average', async (req, res) => {
+    await calculate_average(req, res);
+})
+
+app.get('/api/calculations/highest', async (req, res) => {
+    await calculate_highest(req, res);
+})
+
+app.get('/api/calculations/lowest', async (req, res) => {
+    await calculate_lowest(req, res);
 })
 
 //GET function(s)
@@ -89,6 +102,41 @@ async function post_data(data, res) {
         const post_result = await service.postTempHumidData(mysql, data);
         console.log("Saved: " + post_result.insertId);
         res.sendStatus(201);
+    } catch(e){
+        console.error(e);
+    }
+}
+
+//Calculation function(s)
+
+//Returns the average temperature and humidity of a given date
+async function calculate_average(req, res) {
+    try {
+        date = req.query.date;
+        const data = await service.getAverage( await service.getDataFromSpecificDate(date) );
+        res.send(data);
+    } catch(e){
+        console.error(e);
+    }
+}
+
+//Returns the highest temperature and humidity of a given date
+async function calculate_highest(req, res) {
+    try {
+        date = req.query.date;
+        const data = await service.getHighest( await service.getDataFromSpecificDate(date) );
+        res.send(data);
+    } catch(e){
+        console.error(e);
+    }
+}
+
+//Returns the lowest temperature and humidity of a given date
+async function calculate_lowest(req, res) {
+    try {
+        date = req.query.date;
+        const data = await service.getLowest( await service.getDataFromSpecificDate(date) );
+        res.send(data);
     } catch(e){
         console.error(e);
     }

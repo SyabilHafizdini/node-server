@@ -20,8 +20,60 @@ class TempHumidService {
 
     return (
       {
-        averageTemp: totalTemp / arrayofTempHumid.length,
-        averageHum: totalHum / arrayofTempHumid.length
+        averageTemp: Math.round(totalTemp / arrayofTempHumid.length * 10) / 10,
+        averageHum: Math.round(totalHum / arrayofTempHumid.length * 10) / 10
+      }
+    )
+  }
+
+  getHighest(arrayofTempHumid){
+    // Return an object: { averageTemp: number, averageHum: number}
+    const {
+      highestDateTime,
+      highestTemp,
+      highestHum
+    } = arrayofTempHumid.reduce((acc, currentTempHumid) => {
+      return {
+        highestTemp: acc.highestTemp > currentTempHumid.temperature ? acc.highestTemp : currentTempHumid.temperature,
+        highestHum: acc.highestHum > currentTempHumid.humidity ? acc.highestHum : currentTempHumid.humidity,
+      }
+    }, {
+      highestDateTime: "",
+      highestTemp: Number.MIN_SAFE_INTEGER,
+      highestHum: Number.MIN_SAFE_INTEGER
+    });
+
+    return (
+      {
+        highestTemp: highestTemp,
+        highestHum: highestHum,
+        highestDateTime: highestDateTime
+      }
+    )
+  }
+
+  getLowest(arrayofTempHumid){
+    // Return an object: { averageTemp: number, averageHum: number}
+    const {
+      lowestDateTime,
+      lowestTemp,
+      lowestHum
+    } = arrayofTempHumid.reduce((acc, currentTempHumid) => {
+      return {
+        lowestTemp: acc.lowestTemp < currentTempHumid.temperature ? acc.lowestTemp : currentTempHumid.temperature,
+        lowestHum: acc.lowestHum < currentTempHumid.humidity ? acc.lowestHum : currentTempHumid.humidity,
+      }
+    }, {
+      lowestDateTime: null,
+      lowestTemp: Number.MAX_SAFE_INTEGER,
+      lowestHum: Number.MAX_SAFE_INTEGER
+    });
+
+    return (
+      {
+        lowestTemp: lowestTemp,
+        lowestHum: lowestHum,
+        lowestDateTime: lowestDateTime
       }
     )
   }

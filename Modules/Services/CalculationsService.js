@@ -8,8 +8,10 @@ class CalculationsService {
     const {
       totalTemp,
       totalHum,
+      date,
     } = arrayofTempHumid.reduce((acc, currentTempHumid) => {
       return {
+        date: currentTempHumid.datetime,
         totalTemp: acc.totalTemp + currentTempHumid.temperature,
         totalHum: acc.totalHum + currentTempHumid.humidity
       }
@@ -20,6 +22,7 @@ class CalculationsService {
 
     return (
       {
+        date: date.substring(0, 8),        
         averageTemp: Math.round(totalTemp / arrayofTempHumid.length * 10) / 10,
         averageHum: Math.round(totalHum / arrayofTempHumid.length * 10) / 10
       }
@@ -30,9 +33,11 @@ class CalculationsService {
     // Return an object: { averageTemp: number, averageHum: number}
     const {
       highestTemp,
+      date
     } = arrayofTempHumid.reduce((acc, currentTempHumid) => {
       return {
         highestTemp: acc.highestTemp > currentTempHumid.temperature ? acc.highestTemp : currentTempHumid.temperature,
+        date: currentTempHumid.datetime
       }
     }, {
       highestTemp: Number.MIN_SAFE_INTEGER,
@@ -40,6 +45,7 @@ class CalculationsService {
 
     return (
       {
+        date: date.substring(0, 8),        
         highestTemperature: highestTemp,
       }
     )
@@ -49,9 +55,11 @@ class CalculationsService {
     // Return an object: { averageTemp: number, averageHum: number}
     const {
       highestHum,
+      date
     } = arrayofTempHumid.reduce((acc, currentTempHumid) => {
       return {
         highestHum: acc.highestHum > currentTempHumid.humidity ? acc.highestHum : currentTempHumid.humidity,
+        date: currentTempHumid.datetime
       }
     }, {
       highestHum: Number.MIN_SAFE_INTEGER,
@@ -59,6 +67,7 @@ class CalculationsService {
 
     return (
       {
+        date: date.substring(0, 8),        
         highestHumidity: highestHum,
       }
     )
@@ -67,10 +76,12 @@ class CalculationsService {
   getLowestTemperature(arrayofTempHumid){
     // Return an object: { averageTemp: number, averageHum: number}
     const {
-      lowestTemp
+      lowestTemp,
+      date
     } = arrayofTempHumid.reduce((acc, currentTempHumid) => {
       return {
         lowestTemp: acc.lowestTemp < currentTempHumid.temperature ? acc.lowestTemp : currentTempHumid.temperature,
+        date: currentTempHumid.datetime
       }
     }, {
       lowestTemp: Number.MAX_SAFE_INTEGER
@@ -78,6 +89,7 @@ class CalculationsService {
 
     return (
       {
+        date: date.substring(0, 8),        
         lowestTemperature: lowestTemp,
       }
     )
@@ -86,10 +98,12 @@ class CalculationsService {
   getLowestHumidity(arrayofTempHumid){
     // Return an object: { averageTemp: number, averageHum: number}
     const {
-      lowestHum
+      lowestHum,
+      date
     } = arrayofTempHumid.reduce((acc, currentTempHumid) => {
       return {
         lowestHum: acc.lowestHum < currentTempHumid.humidity ? acc.lowestHum : currentTempHumid.humidity,
+        date: currentTempHumid.datetime
       }
     }, {
       lowestHum: Number.MAX_SAFE_INTEGER
@@ -97,6 +111,7 @@ class CalculationsService {
 
     return (
       {
+        date: date.substring(0, 8),        
         lowestHumdity: lowestHum,
       }
     )

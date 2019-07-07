@@ -45,8 +45,9 @@ class CalculationsService {
 
     return (
       {
-        date: date.substring(0, 8),        
-        highestTemperature: highestTemp,
+        date: date.substring(0, 8),    
+        type: 'temperature',    
+        value: highestTemp,
       }
     )
   }
@@ -67,8 +68,9 @@ class CalculationsService {
 
     return (
       {
-        date: date.substring(0, 8),        
-        highestHumidity: highestHum,
+        date: date.substring(0, 8),
+        type: 'humidity',      
+        value: highestHum,
       }
     )
   }
@@ -89,8 +91,9 @@ class CalculationsService {
 
     return (
       {
-        date: date.substring(0, 8),        
-        lowestTemperature: lowestTemp,
+        date: date.substring(0, 8),  
+        type: 'temperature',      
+        value: lowestTemp,
       }
     )
   }
@@ -111,8 +114,9 @@ class CalculationsService {
 
     return (
       {
-        date: date.substring(0, 8),        
-        lowestHumdity: lowestHum,
+        date: date.substring(0, 8),  
+        type: 'humidity',      
+        value: lowestHum,
       }
     )
   }

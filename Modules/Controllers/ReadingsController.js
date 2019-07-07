@@ -12,8 +12,8 @@ const ReadingsServiceClass = require('../Services/ReadingsService');
 
       expressAppInstance.get(this.makeRouteName(''), async (req, res) => {
         const { date } = req.query;
-        if(date){
-          res.send(await ReadingsService.getDataFromSpecificDate(date))
+        if (date){
+          res.send(await ReadingsService.getReadingsFromSpecificDate(date))
         } else {
           res.send(await ReadingsService.getAll());
         }

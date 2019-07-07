@@ -16,7 +16,7 @@ const ReadingsServiceClass = require('../Services/ReadingsService');
         expressAppInstance.get(this.makeRouteName('average'), async (req, res) => {
             try {
                 const { date } = req.query;
-                const data = await CalculationsService.getAverage( await ReadingsService.getDataFromSpecificDate(date) );
+                const data = await CalculationsService.getAverage( await ReadingsService.getReadingsFromSpecificDate(date) );
                 res.send(data);
             } catch(e){
                 console.error(e);
@@ -26,13 +26,15 @@ const ReadingsServiceClass = require('../Services/ReadingsService');
         expressAppInstance.get(this.makeRouteName('highest'), async (req, res) => {
             try {
                 const { date, type } = req.query;
-                let data;
+                let data, payload;
                 switch (type) {
                     case 'temp':
-                        data = await CalculationsService.getHighestTemperature( await ReadingsService.getDataFromSpecificDate(date) );
+                        payload = await CalculationsService.getHighestTemperature(await ReadingsService.getReadingsFromSpecificDate(date));
+                        data = await ReadingsService.getReadingsFromSpecificDateAndValue(payload.date, payload.type, payload.value);
                         break;
                     case 'hum':
-                        data = await CalculationsService.getHighestHumidity( await ReadingsService.getDataFromSpecificDate(date) );
+                        payload = await CalculationsService.getHighestHumidity(await ReadingsService.getReadingsFromSpecificDate(date));
+                        data = await ReadingsService.getReadingsFromSpecificDateAndValue(payload.date, payload.type, payload.value);
                         break;
                     default:
                         data = "Please choose add '&type=(temp/hum)'";
@@ -46,13 +48,15 @@ const ReadingsServiceClass = require('../Services/ReadingsService');
         expressAppInstance.get(this.makeRouteName('lowest'), async (req, res) => {
             try {
                 const { date, type } = req.query;
-                let data;
+                let data, payload;
                 switch (type) {
                     case 'temp':
-                        data = await CalculationsService.getLowestTemperature( await ReadingsService.getDataFromSpecificDate(date) );
+                        payload = await CalculationsService.getLowestTemperature(await ReadingsService.getReadingsFromSpecificDate(date));
+                        data = await ReadingsService.getReadingsFromSpecificDateAndValue(payload.date, payload.type, payload.value);
                         break;
                     case 'hum':
-                        data = await CalculationsService.getLowestHumidity( await ReadingsService.getDataFromSpecificDate(date) );
+                        payload = await CalculationsService.getLowestHumidity(await ReadingsService.getReadingsFromSpecificDate(date));
+                        data = await ReadingsService.getReadingsFromSpecificDateAndValue(payload.date, payload.type, payload.value);
                         break;
                     default:
                         data = "Please choose add '&type=(temp/hum)'";

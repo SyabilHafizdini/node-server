@@ -6,7 +6,9 @@
     "host": "localhost",
     "user": "root",
     "password": "password",
-    "database": "fyp2019"
+    "database": "fyp2019",
+    "connectionLimit": 100,
+    "debug": false
   },
   "models": {
     "TemperatureHumidity": {

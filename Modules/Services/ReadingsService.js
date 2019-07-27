@@ -17,7 +17,7 @@ class ReadingsService {
 
   getReadingsFromSpecificDate(date){
     return new Promise((resolve, reject) => {
-      this.pool.query(`SELECT * FROM temphumid WHERE SUBSTR(datetime,1,8) = "${date}"`, function(err, results, rows) {
+      this.pool.query(`SELECT * FROM temphumid WHERE SUBSTR(datetime,1,8) = "${date}" LIMIT 100`, function(err, results, rows) {
         if(err) {
           reject(err);
         }
@@ -30,6 +30,17 @@ class ReadingsService {
   getReadingsFromSpecificDateAndValue(date, type, value){
     return new Promise((resolve, reject) => {
       this.pool.query(`SELECT * FROM temphumid WHERE SUBSTR(datetime,1,8) = "${date}" AND ${type} = ${value}`, function(err, results, rows) {
+        if(err) {
+          reject(err);
+        }
+        resolve(results);
+      });
+    })
+  }
+
+  getReadingsFromSpecificDateAndHour(date, hour){
+    return new Promise((resolve, reject) => {
+      this.pool.query(`SELECT * FROM temphumid WHERE SUBSTR(datetime,1,8) = "${date}" AND SUBSTR(datetime,10,2) = ${hour}`, function(err, results, rows) {
         if(err) {
           reject(err);
         }

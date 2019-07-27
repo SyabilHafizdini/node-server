@@ -18,7 +18,27 @@ const DatesServiceClass = require('../Services/DatesService');
             console.error(e);
         }
       });
-    }
+
+      expressAppInstance.get(this.makeRouteName('months'), async (req, res) => {
+        const { year } = req.query;
+        try {
+            const data = await DatesService.getAllMonths(year);
+            res.send(data);
+        } catch(e){
+            console.error(e);
+        }
+      });
+
+      expressAppInstance.get(this.makeRouteName('days'), async (req, res) => {
+        const { month } = req.query;
+        try {
+            const data = await DatesService.getAllDays(month);
+            res.send(data);
+        } catch(e){
+            console.error(e);
+        }
+      });
+    }    
 
 }
 

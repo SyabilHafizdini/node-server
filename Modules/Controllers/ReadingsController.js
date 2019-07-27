@@ -21,7 +21,7 @@ const ReadingsServiceClass = require('../Services/ReadingsService');
 
       expressAppInstance.post(this.makeRouteName(''), async (req, res) => {
         try {
-            const post_result = await ReadingsService.postTempHumidData(mysql, req.body);
+            const post_result = await ReadingsService.postTempHumidData(mysql, req.body); 	
             console.log("Saved: " + post_result.insertId);
             res.sendStatus(201);
         } catch(e){

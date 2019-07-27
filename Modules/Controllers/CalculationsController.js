@@ -2,7 +2,6 @@ const CalculationsServiceClass = require('../Services/CalculationsService');
 const ReadingsServiceClass = require('../Services/ReadingsService');
 
   class CalculationsController {
-    
     makeRouteName(routeNameWithoutSlash){
       const prefix = '/api/calculations';
 
@@ -15,8 +14,13 @@ const ReadingsServiceClass = require('../Services/ReadingsService');
 
         expressAppInstance.get(this.makeRouteName('average'), async (req, res) => {
             try {
-                const { date } = req.query;
-                const data = await CalculationsService.getAverage( await ReadingsService.getReadingsFromSpecificDate(date) );
+                const { date, hour } = req.query;
+                let data;
+                if (hour) {
+                    data = await CalculationsService.getAverage( await ReadingsService.getReadingsFromSpecificDateAndHour(date, hour) );
+                } else {
+                    data = await CalculationsService.getAverage( await ReadingsService.getReadingsFromSpecificDate(date) );                    
+                }
                 res.send(data);
             } catch(e){
                 console.error(e);

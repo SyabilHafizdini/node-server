@@ -22,11 +22,12 @@ class CalculationsService {
 
     return (
       {
-        date: date.substring(0, 8),        
+        date: date.substring(0, 8), 
+        time: arrayofTempHumid[0].datetime.substring(9,17),                       
         averageTemp: Math.round(totalTemp / arrayofTempHumid.length * 10) / 10,
-        averageHum: Math.round(totalHum / arrayofTempHumid.length * 10) / 10
+        averageHum: Math.round(totalHum / arrayofTempHumid.length * 10) / 10,
       }
-    )
+    );
   }
 
   getHighestTemperature(arrayofTempHumid){

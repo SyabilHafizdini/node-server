@@ -5,7 +5,7 @@ class ReadingsService {
 
   getAll(){
     return new Promise((resolve, reject) => {
-      this.pool.query('SELECT * FROM `temphumid` ORDER BY `datetime` DESC LIMIT 1000', function(err, results, rows) {
+      this.pool.query('SELECT * FROM `temphumid` ORDER BY `datetime` DESC', function(err, results, rows) {
         if(err) {
           reject(err);
         }
@@ -15,9 +15,20 @@ class ReadingsService {
     })
   }
 
+  getReadingsFromMonth(month){
+    return new Promise((resolve, reject) => {
+      this.pool.query(`SELECT COUNT(SUBSTR(datetime,4,2)) as month FROM temphumid WHERE SUBSTR(datetime,4,2) = ${month}`, function(err, results, rows) {
+        if(err) {
+          reject(err);
+        }
+        resolve(results);
+      });
+    })
+  }
+
   getReadingsFromSpecificDate(date){
     return new Promise((resolve, reject) => {
-      this.pool.query(`SELECT * FROM temphumid WHERE SUBSTR(datetime,1,8) = "${date}" LIMIT 100`, function(err, results, rows) {
+      this.pool.query(`SELECT * FROM temphumid WHERE SUBSTR(datetime,1,8) = "${date}"`, function(err, results, rows) {
         if(err) {
           reject(err);
         }

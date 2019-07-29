@@ -22,12 +22,15 @@ const ReadingsController = require('./Modules/Controllers/ReadingsController');
 const CalculationsController = require('./Modules/Controllers/CalculationsController');
 const DatesController = require('./Modules/Controllers/DatesController');
 const UsersController = require('./Modules/Controllers/UsersController');
+const EmailController = require('./Modules/Controllers/EmailController');
+
 
 // initialize controller(s)
 new ReadingsController().registerRoutes(app, pool, mysql);
 new CalculationsController().registerRoutes(app, pool);
 new DatesController().registerRoutes(app, pool);
 new UsersController().registerRoutes(app, pool);
+new EmailController().registerRoutes(app, pool);
 
 //Setting PORT and IP for node server
 const ip = config.get('ips.home.desktop');

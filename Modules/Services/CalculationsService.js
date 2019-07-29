@@ -3,7 +3,19 @@ class CalculationsService {
     this.pool = pool;
   }
 
-  getAverage(arrayofTempHumid){
+  calculateSLA(numOfInserts, month){
+    // Return an object: { averageTemp: number, averageHum: number}
+    const secondsIn30Days = 2000000;
+    var uptimePercentage =  numOfInserts[0].month / secondsIn30Days * 100;
+    return (
+      {
+        month: month, 
+        uptimePercentage: uptimePercentage,
+      }
+    );
+  }
+
+   getAverage(arrayofTempHumid){
     // Return an object: { averageTemp: number, averageHum: number}
     const {
       totalTemp,

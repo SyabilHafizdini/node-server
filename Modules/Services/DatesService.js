@@ -3,7 +3,7 @@ class DatesService {
     this.pool = pool;
   }
 
-  getAllDates(){
+   getAllDates(){
     return new Promise((resolve, reject) => {
       this.pool.query('SELECT DISTINCT SUBSTR(`datetime`,1,8) as date FROM `temphumid`', function(err, results, rows) {
         if(err) {
@@ -15,7 +15,7 @@ class DatesService {
     })
   }
   
-  getAllMonths(year){
+   getAllMonths(year){
     return new Promise((resolve, reject) => {
       this.pool.query(`SELECT DISTINCT SUBSTR(datetime,4,2) AS months FROM temphumid WHERE SUBSTR(datetime,7,2) = "${year}" ORDER BY months`, function(err, results, rows) {
         if(err) {
@@ -27,7 +27,7 @@ class DatesService {
     })
   }
 
-    getAllDays(month){
+   getAllDays(month){
     return new Promise((resolve, reject) => {
       this.pool.query(`SELECT DISTINCT SUBSTR(datetime,1,2) as days FROM temphumid WHERE SUBSTR(datetime,4,2) = "${month}" ORDER BY days`, function(err, results, rows) {
         if(err) {
@@ -39,7 +39,7 @@ class DatesService {
     })
   }
 
-  getAllHours(){
+   getAllHours(){
     return new Promise((resolve, reject) => {
       this.pool.query('SELECT DISTINCT SUBSTR(`datetime`,1,8) as date FROM `temphumid`', function(err, results, rows) {
         if(err) {

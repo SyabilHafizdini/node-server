@@ -5,7 +5,7 @@ class CalculationsService {
   
     sendSLA(numOfInserts, month){
       // Return an object: { averageTemp: number, averageHum: number}
-      const secondsIn30Days = 2000000;
+      const secondsIn30Days = 740571;
       var uptimePercentage =  numOfInserts[0].month / secondsIn30Days * 100;
       return (
         {

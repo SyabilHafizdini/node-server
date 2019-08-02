@@ -31,7 +31,7 @@ var nodemailer = require('nodemailer');
                     from: 'FYPalert2019@gmail.com',
                     to: email,
                     subject: `SLA report for the month: ${month}`,
-                    text: `For the month ${month}, our Pi has a ${sla.uptimePercentage}% data transfer.`
+                    text: `For the month ${month}, our Pi has a ${sla.uptimePercentage}% data transfer.Total inserts: ${sla.numOfInserts}`
                   };
 
                   console.log("Sending email...");
